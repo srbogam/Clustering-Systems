@@ -128,27 +128,30 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 	link = vars(args)['link']
 	c_flag = None
-	# matrix_file = "proximity_matrix.pkl"
-	# if os.path.isfile(matrix_file):
-	# 	matrix_f = open(matrix_file, 'rb')
-	# 	matrix = pickle.load(matrix_f)
-	# 	matrix_f.close()
-	# else:
-	# 	dfile = open('matrix_data.txt', 'rb')
-	# 	data = pickle.load(dfile)
-	# 	# data = data[0:50]
-	# 	matrix = raw_matrix(data)
-	# 	matrix_f = open(matrix_file, 'wb')
-	# 	pickle.dump(matrix, matrix_f)
-	# 	matrix_f.close()
-	# 	dfile.close()
+	test = True
 
-	matrix = [[0, 0.23, 0.22, 0.37, 0.34, 0.24],
-			  [0.23, 0, 0.14, 0.19, 0.14, 0.24],
-			  [0.22, 0.14, 0, 0.16, 0.28, 0.1],
-			  [0.37, 0.19, 0.16, 0, 0.28, 0.22],
-			  [0.34, 0.14, 0.28, 0.28, 0, 0.39],
-			  [0.24, 0.24, 0.1, 0.22,0.39, 0]]
+	if test:
+		matrix = [[0, 0.23, 0.22, 0.37, 0.34, 0.24],
+				  [0.23, 0, 0.14, 0.19, 0.14, 0.24],
+				  [0.22, 0.14, 0, 0.16, 0.28, 0.1],
+				  [0.37, 0.19, 0.16, 0, 0.28, 0.22],
+				  [0.34, 0.14, 0.28, 0.28, 0, 0.39],
+				  [0.24, 0.24, 0.1, 0.22,0.39, 0]]
+	else:
+		matrix_file = "proximity_matrix.pkl"
+		if os.path.isfile(matrix_file):
+			matrix_f = open(matrix_file, 'rb')
+			matrix = pickle.load(matrix_f)
+			matrix_f.close()
+		else:
+			dfile = open('matrix_data.txt', 'rb')
+			data = pickle.load(dfile)
+			data = data[0:20]
+			matrix = raw_matrix(data)
+			# matrix_f = open(matrix_file, 'wb')
+			# pickle.dump(matrix, matrix_f)
+			# matrix_f.close()
+			dfile.close()
 
 	if link == "single-link":
 		c_flag = 0
