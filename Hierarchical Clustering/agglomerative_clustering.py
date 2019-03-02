@@ -8,8 +8,28 @@ from scipy.cluster.hierarchy import dendrogram
 import matplotlib.pyplot as plt
 
 class Agglomerative_Hierarchical:
+    """
+	This class contains functions which comprise the core implementation of agglomerative
+	hierarchical clustering.
+	"""
 
 	def matrix_min(self, matrix, traversed_points):
+    """
+	This function returns the minimum value in matrix. Traverse points are avoided in
+	minimum calculation.
+
+    Parameters
+    ----------
+    matrix : list
+        The matrix whose minimum element is to be calculated.
+    traversed_points : list
+        The list of points already traverse elsewhere.
+
+    Returns
+    -------
+    type : list
+        A list consisting of the minimum element's coordinates.
+    """
 		min_val = 9999
 		min_i = 0
 		min_j = 0
@@ -24,6 +44,23 @@ class Agglomerative_Hierarchical:
 		return [min_i, min_j]
 
 	def min_cluster_distance(self, matrix, cluster1, cluster2):
+    """
+	This function calculates the minimum distance between two clusters of points.
+
+    Parameters
+    ----------
+    matrix : list
+        The matrix to be operated upon.
+    cluster1 : list
+        Cluster of points.
+    cluster2 : list
+        Cluster of points.
+
+    Returns
+    -------
+    type : int
+        Minimum distance between the two passed clusters.
+    """
 		dist_list = []
 
 		if isinstance(cluster1, int):
@@ -39,6 +76,23 @@ class Agglomerative_Hierarchical:
 		return min(dist_list)
 
 	def max_cluster_distance(self, matrix, cluster1, cluster2):
+		"""
+		This function calculates the maximum distance between two clusters of points.
+
+	    Parameters
+	    ----------
+	    matrix : list
+	        The matrix to be operated upon.
+	    cluster1 : list
+	        Cluster of points.
+	    cluster2 : list
+	        Cluster of points.
+
+	    Returns
+	    -------
+	    type : int
+	        Maximum distance between the two passed clusters.
+	    """
 		dist_list = []
 
 		if isinstance(cluster1, int):
@@ -54,6 +108,23 @@ class Agglomerative_Hierarchical:
 		return max(dist_list)
 
 	def avg_cluster_distance(self, matrix, cluster1, cluster2):
+		"""
+		This function calculates the average distance between two clusters of points.
+
+	    Parameters
+	    ----------
+	    matrix : list
+	        The matrix to be operated upon.
+	    cluster1 : list
+	        Cluster of points.
+	    cluster2 : list
+	        Cluster of points.
+
+	    Returns
+	    -------
+	    type : int
+	        Average distance between the two passed clusters.
+	    """
 		dist_list = []
 
 		if isinstance(cluster1, int):
@@ -69,6 +140,23 @@ class Agglomerative_Hierarchical:
 		return sum(dist_list) / ((len(cluster1) * len(cluster2)))
 
 	def matrix_gen(self, matrix, cluster, flag):
+    """
+	This function generates a new proximity matrix after cluster calculation.
+
+    Parameters
+    ----------
+    matrix : list
+        The matrix to be operated upon.
+    cluster : list
+        The newly formed cluster of points.
+    flag : int
+        A parameter that specifies the type of linkage to use.
+
+    Returns
+    -------
+    type : list
+        The newly calculated proximity matrix.
+    """
 		matrix = np.asarray(matrix)
 		dist_vector = []
 		for cluster1 in range(matrix.shape[0]):
@@ -86,6 +174,22 @@ class Agglomerative_Hierarchical:
 		return matrix
 
 	def clustering(self, matrix, flag):
+    """
+	This function progressively performs agglomerative clustering. The heart of the entire
+	class that calls all other relevant methods.
+
+    Parameters
+    ----------
+    matrix : list
+        The proximity matrix to be operated upon.
+    flag : int
+        A parameter that specifies the type of linkage to use.
+
+    Returns
+    -------
+    type : list
+        A list consisting of the final priority matrix and the linkage matrix.
+    """
 		total = len(matrix[0])
 		K = 1
 		linkage_matrix = np.zeros(shape=(total-1, 4))
@@ -116,8 +220,26 @@ class Agglomerative_Hierarchical:
 		return [matrix, linkage_matrix]
 
 class Proximity_Matrix:
+    """
+	This class is called in the very beginning, when calculating the proximity matrix for
+	the first time from the data.
+	"""
 
 	def distance(self, sample1, sample2):
+    """Short summary.
+
+    Parameters
+    ----------
+    sample1 : list
+        A sample in the data.
+    sample2 : list
+        A sample in the data.
+
+    Returns
+    -------
+    type : float
+        The distance between the two samples.
+    """
 		edist = 0
 		for i in range(len(sample1)):
 			dist = 0
@@ -128,6 +250,19 @@ class Proximity_Matrix:
 		return math.sqrt(edist)
 
 	def raw_matrix(self, data):
+    """
+	This function calculates the first proximity matrix.
+
+    Parameters
+    ----------
+    data : list
+        The processed data, obtained from raw data.
+
+    Returns
+    -------
+    type : list
+        The very first proximity matrix.
+    """
 		matrix = []
 
 		for sample1 in data:
@@ -150,9 +285,9 @@ if __name__ == "__main__":
 	link = vars(args)['link']
 	c_flag = None
 	# test = True
-	test = False
+	test = False   # Flags for running the program in testing mode.
 
-	if test:
+	if test:   # The proximity matrix to be used for testing.
 		matrix = [[0, 0.23, 0.22, 0.37, 0.34, 0.24],
 				  [0.23, 0, 0.14, 0.19, 0.14, 0.24],
 				  [0.22, 0.14, 0, 0.16, 0.28, 0.1],
@@ -187,5 +322,5 @@ if __name__ == "__main__":
 	pprint(linkage_matrix)
 
 	fig = plt.figure(figsize=(8, 4))
-	dendrogram = dendrogram(linkage_matrix)
+	dendrogram = dendrogram(linkage_matrix)   # Draw dendrogram of final clusters.
 	plt.show()
