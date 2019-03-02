@@ -149,7 +149,8 @@ if __name__ == "__main__":
 	args = parser.parse_args()
 	link = vars(args)['link']
 	c_flag = None
-	test = True
+	# test = True
+	test = False
 
 	if test:
 		matrix = [[0, 0.23, 0.22, 0.37, 0.34, 0.24],
@@ -167,11 +168,11 @@ if __name__ == "__main__":
 		else:
 			dfile = open('matrix_data.txt', 'rb')
 			data = pickle.load(dfile)
-			data = data[0:100]
+			# data = data[0:100]
 			matrix = proximity.raw_matrix(data)
-			# matrix_f = open(matrix_file, 'wb')
-			# pickle.dump(matrix, matrix_f)
-			# matrix_f.close()
+			matrix_f = open(matrix_file, 'wb')
+			pickle.dump(matrix, matrix_f)
+			matrix_f.close()
 			dfile.close()
 
 	if link == "single-link":
