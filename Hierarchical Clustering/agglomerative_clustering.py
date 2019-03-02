@@ -90,12 +90,25 @@ class Agglomerative_Hierarchical:
 		K = 1
 		linkage_matrix = np.zeros(shape=(total-1, 4))
 		traversed_points = []
+		cluster_numbers = {}
+		lflag = total
 
 		while K < total:
 			cluster = self.matrix_min(matrix, traversed_points)
 			if cluster[0] not in traversed_points and cluster[1] not in traversed_points:
 				matrix = self.matrix_gen(matrix, cluster, flag)
-				linkage_matrix[K-1] = [cluster[0], cluster[1], matrix[cluster[0]][cluster[1]], 0]
+				temp = 0
+				if str(cluster[0]) in cluster_numbers.keys():
+					temp = temp + cluster_numbers[str(cluster[0])]
+				else:
+					temp = temp + 1
+				if str(cluster[1]) in cluster_numbers.keys():
+					temp = temp + cluster_numbers[str(cluster[1])]
+				else:
+					temp = temp + 1
+				linkage_matrix[K-1] = [cluster[0], cluster[1], matrix[cluster[0]][cluster[1]], temp]
+				lflag = lflag + 1
+				cluster_numbers[str(lflag)] = temp
 				traversed_points.append(cluster[0])
 				traversed_points.append(cluster[1])
 			K = K + 1
@@ -112,7 +125,7 @@ class Proximity_Matrix:
 				dist = dist + abs(sample1[i][j] - sample2[i][j])
 				edist = edist + dist**2
 
-				return math.sqrt(edist)
+		return math.sqrt(edist)
 
 	def raw_matrix(self, data):
 		matrix = []
@@ -154,7 +167,7 @@ if __name__ == "__main__":
 		else:
 			dfile = open('matrix_data.txt', 'rb')
 			data = pickle.load(dfile)
-			data = data[0:20]
+			data = data[0:100]
 			matrix = proximity.raw_matrix(data)
 			# matrix_f = open(matrix_file, 'wb')
 			# pickle.dump(matrix, matrix_f)
@@ -169,6 +182,8 @@ if __name__ == "__main__":
 		c_flag = 2
 
 	linkage_matrix = agglomerative.clustering(matrix, c_flag)[1]
+
+	pprint(linkage_matrix)
 
 	fig = plt.figure(figsize=(8, 4))
 	dendrogram = dendrogram(linkage_matrix)
