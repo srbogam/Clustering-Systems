@@ -245,7 +245,7 @@ class Proximity_Matrix:
 			dist = 0
 			for j in range(len(sample1[i])):
 				dist = dist + abs(sample1[i][j] - sample2[i][j])
-				edist = edist + dist**2
+				edist = edist + dist
 
 		return math.sqrt(edist)
 
