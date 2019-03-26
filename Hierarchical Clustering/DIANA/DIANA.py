@@ -195,21 +195,21 @@ class Divisive_Hierarchical:
                 continue
             for point in cluster:
                 temp_avg_dist = self.total_distance(point, cluster, matrix) / len(cluster)
-                if temp_avg_dist >= avg_dist:
+                if temp_avg_dist > avg_dist:
                     avg_dist = temp_avg_dist
-                    print('point: ',point,temp_avg_dist)
+                    # print('point: ',point,temp_avg_dist)
                     mv_point = point
                     mv_cluster = cluster
         self.num_clusters += 1
-        print('removing: ',mv_point,'from ',mv_cluster)
-        return mv_cluster,mv_point,avg_dist
+        # print('removing: ',mv_point,'from ',mv_cluster)
+        return mv_cluster,mv_point
 
-    def rearrange(self,clusters,matrix,splinter_cluster,splinter_point,avg_dist,linkage_matrix):
+    def rearrange(self,clusters,matrix,splinter_cluster,splinter_point,linkage_matrix):
         pass
         splinter_cluster_index = clusters.index(splinter_cluster)
         splinter_point_index = splinter_cluster.index(splinter_point)
-        print(splinter_cluster_index)
-        print(splinter_point_index)
+        # print(splinter_cluster_index)
+        # print(splinter_point_index)
         flag = True
         new_cluster = [splinter_point]  
         clusters[splinter_cluster_index].remove(splinter_point)
@@ -217,7 +217,7 @@ class Divisive_Hierarchical:
             avg_dist = 0
             mv_point = None
             for point in splinter_cluster:
-                temp_avg_dist_A = self.total_distance(point, splinter_cluster, matrix) / len(new_cluster)
+                temp_avg_dist_A = self.total_distance(point, clusters[splinter_cluster_index], matrix) / len(clusters[splinter_cluster_index])
                 temp_avg_dist_B = self.total_distance(point, new_cluster, matrix) / len(new_cluster)
                 temp_avg_dist = temp_avg_dist_A - temp_avg_dist_B
                 if temp_avg_dist >= avg_dist:
@@ -264,9 +264,9 @@ class Divisive_Hierarchical:
         self.cluster_dict[self.last_index] = clusters[0]
         print(self.cluster_dict)
         while not self.finished(clusters):
-            splinter_cluster,splinter_point,avg_dist = self.find_splinter(clusters,matrix)
-            # print('to remove: \n',splinter_cluster,splinter_point,avg_dist)
-            self.rearrange(clusters,matrix,splinter_cluster,splinter_point,avg_dist,linkage_matrix)
+            splinter_cluster,splinter_point = self.find_splinter(clusters,matrix)   
+            print('to remove: \n',splinter_cluster,splinter_point)
+            self.rearrange(clusters,matrix,splinter_cluster,splinter_point,linkage_matrix)
             # print(splinter_cluster,splinter_point,avg_dist)
             # print(clusters)
             # print(linkage_matrix)
