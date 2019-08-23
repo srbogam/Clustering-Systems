@@ -54,8 +54,4 @@ published as dendrograms:
 2. Scipy
 3. Matplotlib
 
-### Authors
 
-![Naren Surampudi](https://github.com/nsurampu/)
-![Aditya Srikanth]
-![Prateek Das Gupta]
